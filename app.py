@@ -2,15 +2,17 @@ from flask import Flask
 from flask import request
 import requests
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
 
+CORS(app, resources=r'/*')
 
 @app.route('/getDataByCode')
 def getDataByCode():  # put application's code here
     url = 'http://api.tushare.pro'
-    # ts_code = request.json.get("ts_code").strip() # 接受参数
-    ts_code = "000001.SZ"
+    ts_code = request.args["ts_code"]
+    # ts_code = "000001.SZ"
     body = {
         "api_name": "daily",
         "token": "0d43464d84c399737c36d0dc8a2b32a32be9a193e8203230668f66f2",
