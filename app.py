@@ -27,6 +27,7 @@ def getDataByCode():  # put application's code here
         data[i]=data[i][:6]
         data[i].append(vol)
         i+=1
+    data=data[:34]# 取近34天（0-33）的数据（第30天的要用到30-34的数据来计算ma5）
     return json.dumps(data)
 
 
