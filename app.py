@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # 与mysql的连接
 connect = pymysql.connect(host='120.46.152.35', user='root', password='123456',
-                          database='quantitative_trading_service_system',charset='utf8')
+                          database='Quantitative_Trading_Service_System',charset='utf8')
 cursor = connect.cursor()
 
 # 以下是spark的处理
