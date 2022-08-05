@@ -87,8 +87,6 @@ def getDataByCode():  # put application's code here
         cursor.execute(sql,tempdata)
         connect.commit()
         i+=1
-    cursor.close()
-    connect.close()
     return json.dumps(data)
 
 
