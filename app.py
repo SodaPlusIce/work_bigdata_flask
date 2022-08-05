@@ -7,8 +7,14 @@ from pyspark.sql import SparkSession, Window
 from pyspark.sql import functions as F
 import tushare as ts
 import pandas as pd
+import pymysql
 
 app = Flask(__name__)
+
+# 与mysql的连接
+connect = pymysql.connect(host='127.0.0.1', user='root', password='123456',
+                          database='quantitative_trading_service_system',charset='utf8')
+cursor = connect.cursor()
 
 # 以下是spark的处理
 ts.set_token('96dfb6f8b1fd4d5e4972d66a49f72523746fd493cc56d921675a406a')
@@ -74,7 +80,15 @@ def getDataByCode():  # put application's code here
         data[i].append(round(madata["ma10"][i],2))
         data[i].append(round(madata["ma20"][i],2))
         data[i].append(round(madata["ma30"][i],2))
+        sql = "INSERT INTO stocks_basicinfo ( ts_code, trade_date,open,high,low,close,vol,ma5,ma10,ma20,ma30 )" \
+              " VALUES ( %s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s );"
+        tempdata=[data[i][0], data[i][1],data[i][2],data[i][3],data[i][4],data[i][5],data[i][6],
+                  data[i][7],data[i][8],data[i][9],data[i][10]]
+        cursor.execute(sql,tempdata)
+        connect.commit()
         i+=1
+    cursor.close()
+    connect.close()
     return json.dumps(data)
 
 
