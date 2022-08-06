@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request,jsonify
 import requests
 import json
 from flask_cors import CORS
@@ -52,6 +52,7 @@ def calMa5BySpark(ts_code,datebefore,date):
 
 CORS(app, resources=r'/*') # 解决跨域
 
+# 获取k线图上的数据
 @app.route('/getDataByCode')
 def getDataByCode():  # put application's code here
     url = 'http://api.tushare.pro'
@@ -88,6 +89,18 @@ def getDataByCode():  # put application's code here
         connect.commit()
         i+=1
     return json.dumps(data)
+
+# 获取所有股票的ts_code
+@app.route('/stockall',methods=['GET','POST'])
+def stock_all():
+    pro = ts.pro_api()
+    df = pro.stock_basic(exchange='', list_status='L', fields='ts_code,symbol,name,area,industry,list_date')
+
+    df = pd.DataFrame(df)
+    df = df[['ts_code']]
+    df = df.to_json()
+    df = jsonify(json.loads(df))
+    return df
 
 
 if __name__ == '__main__':
