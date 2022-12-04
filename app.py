@@ -11,9 +11,9 @@ import pymysql
 
 app = Flask(__name__)
 
-# 与mysql的连接
-connect = pymysql.connect(host='120.46.152.35', user='root', password='123456',
-                          database='Quantitative_Trading_Service_System',charset='utf8')
+# 与mysql的连接  120.46.152.35
+connect = pymysql.connect(host='127.0.0.1', user='root', password='123456',
+                          database='quantitative_trading_service_system',charset='utf8')
 cursor = connect.cursor()
 
 # 以下是spark的处理
@@ -104,4 +104,5 @@ def stock_all():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0', port=5000)
+    app.run()
